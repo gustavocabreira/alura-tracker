@@ -25,6 +25,8 @@ import { computed, defineComponent } from 'vue';
 import TimerComponent from './TimerComponent.vue';
 import { useStore } from 'vuex';
 import { key } from '@/store';
+import { NOTIFY } from '@/store/mutation-types';
+import { NotificationType } from '@/interfaces/INotification';
 
 export default defineComponent({
 	name: 'MainForm',
@@ -41,6 +43,15 @@ export default defineComponent({
 	},
 	methods: {
 		finishTask(elapsedTimeInSeconds: number): void {
+			if(!this.projectId) {
+				this.store.commit(NOTIFY, {
+          title: 'Ops!',
+          content: 'You must select a project before finishing the task.',
+          type: NotificationType.DANGER,
+        });
+				return;
+			}
+
 			this.$emit('finishTask', {
 				task: this.task,
 				timeInSeconds: elapsedTimeInSeconds,
@@ -53,6 +64,7 @@ export default defineComponent({
 	setup() {
 		const store = useStore(key);
 		return {
+			store,
 			projects: computed(() => store.state.projects),
 		};
 	},
