@@ -19,6 +19,10 @@ export const store = createStore<State>({
         name: name,
       };
       state.projects.push(project);
+    },
+    'UPDATE_PROJECT'(state, project: IProject) {
+      const index = state.projects.findIndex(el => el.id == project.id);
+      state.projects[index] = project;
     }
   }
 });
