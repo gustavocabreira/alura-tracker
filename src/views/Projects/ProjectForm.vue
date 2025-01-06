@@ -17,10 +17,10 @@
 
 <script lang="ts">
 import { NotificationType } from '@/interfaces/INotification';
-import { notificationMixin } from '@/mixins/notify';
 import { useStore } from '@/store';
 import { ADD_PROJECT, UPDATE_PROJECT } from '@/store/mutation-types';
 import { defineComponent } from 'vue';
+import useNotifier from '@/hooks/notifier';
 
 export default defineComponent({
   name: 'ProjectForm',
@@ -30,7 +30,6 @@ export default defineComponent({
       default: '',
     },
   },
-  mixins: [notificationMixin],
   data() {
     return {
       name: '',
@@ -60,8 +59,11 @@ export default defineComponent({
   },
   setup() {
     const store = useStore()
+    const { notify } = useNotifier()
+    
     return {
       store,
+      notify,
     };
   },
   mounted() {

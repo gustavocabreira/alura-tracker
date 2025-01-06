@@ -18,7 +18,7 @@ import ITask from '@/interfaces/ITask';
 import BoxComponent from '@/components/BoxComponent.vue';
 import { useStore } from '@/store';
 import { NotificationType } from '@/interfaces/INotification';
-import { notificationMixin } from '@/mixins/notify';
+import useNotifier from '@/hooks/notifier';
 
 export default defineComponent({
   name: 'TasksView',
@@ -27,7 +27,6 @@ export default defineComponent({
     TaskComponent,
     BoxComponent,
   },
-  mixins: [notificationMixin],
   methods: {
     storeTask(task: ITask): void {
       this.store.commit('ADD_TASK', task);
@@ -36,9 +35,11 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
+    const { notify } = useNotifier();
     return {
       store,
       tasks: computed(() => store.state.tasks),
+      notify,
     };
   }
 });
