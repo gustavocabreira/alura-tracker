@@ -11,11 +11,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
 import MainForm from '@/components/MainForm.vue';
 import TaskComponent from '@/components/TaskComponent.vue';
 import ITask from '@/interfaces/ITask';
 import BoxComponent from '@/components/BoxComponent.vue';
+import { useStore } from '@/store';
 
 export default defineComponent({
   name: 'TasksView',
@@ -24,15 +25,18 @@ export default defineComponent({
     TaskComponent,
     BoxComponent,
   },
-  data() {
-    return {
-      tasks: [] as ITask[],
-    };
-  },
   methods: {
     storeTask(task: ITask): void {
-      this.tasks.push(task);
+      this.store.commit('ADD_TASK', task);
     },
+  },
+  setup() {
+    const store = useStore();
+    return {
+      store,
+      tasks: computed(() => store.state.tasks),
+      projects: computed(() => store.state.projects),
+    };
   }
 });
 </script>

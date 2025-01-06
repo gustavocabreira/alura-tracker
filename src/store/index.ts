@@ -1,10 +1,12 @@
 import IProject from "@/interfaces/IProject";
-import { InjectionKey } from "vue";
+import { InjectionKey, useTemplateRef } from "vue";
 import { createStore, Store, useStore as vuexUseStore } from "vuex";
-import { ADD_PROJECT, DELETE_PROJECT, UPDATE_PROJECT } from "./mutation-types";
+import { ADD_PROJECT, ADD_TASK, DELETE_PROJECT, UPDATE_PROJECT } from "./mutation-types";
+import ITask from "@/interfaces/ITask";
 
 interface State {
   projects: IProject[],
+  tasks: ITask[],
 }
 
 export const key: InjectionKey<Store<State>> = Symbol();
@@ -12,6 +14,7 @@ export const key: InjectionKey<Store<State>> = Symbol();
 export const store = createStore<State>({
   state: {
     projects: [],
+    tasks: [],
   },
   mutations: {
     [ADD_PROJECT](state, name: string) {
@@ -29,6 +32,9 @@ export const store = createStore<State>({
       const index = state.projects.findIndex(el => el.id == project.id);
       state.projects.splice(index, 1);
     },
+    [ADD_TASK](state, task: ITask) {
+      state.tasks.push(task);
+    }
   }
 });
 
