@@ -1,10 +1,10 @@
 import IProject from "@/interfaces/IProject";
 import { InjectionKey } from "vue";
 import { createStore, Store, useStore as vuexUseStore } from "vuex";
-import { ADD_TASK, NOTIFY, SETUP_PROJECTS } from "./mutation-types";
+import { NOTIFY, SETUP_PROJECTS, SETUP_TASKS } from "./mutation-types";
 import ITask from "@/interfaces/ITask";
 import { INotification } from "@/interfaces/INotification";
-import { CREATE_PROJECT, GET_PROJECTS, UPDATE_PROJECT, DELETE_PROJECT } from "./actions-types";
+import { CREATE_PROJECT, GET_PROJECTS, UPDATE_PROJECT, DELETE_PROJECT, GET_TASKS, CREATE_TASK } from "./actions-types";
 import http from "@/http";
 
 interface State {
@@ -25,8 +25,8 @@ export const store = createStore<State>({
     [SETUP_PROJECTS](state, projects: IProject[]) {
       state.projects = projects;
     },
-    [ADD_TASK](state, task: ITask) {
-      state.tasks.push(task);
+    [SETUP_TASKS](state, tasks: ITask[]) {
+      state.tasks = tasks;
     },
     [NOTIFY](state, notification: INotification) {
       notification.id = new Date().getTime();
@@ -54,6 +54,13 @@ export const store = createStore<State>({
     },
     [DELETE_PROJECT](context, project: IProject) {
       return http.delete(`projects/${project.id}`);
+    },
+    [GET_TASKS]({ commit }) {
+      http.get('tasks')
+        .then(response => commit(SETUP_TASKS, response.data))
+    },
+    [CREATE_TASK](context, task: ITask) {
+      return http.post('tasks', task);
     }
   }
 });

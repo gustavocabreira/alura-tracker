@@ -2,10 +2,10 @@
   <div class="column is-three-quarter content">
     <MainForm @finishTask="storeTask" />
     <div class="lista">
-      <TaskComponent v-for="(task, index) in tasks" :key="index" :task="task" />
       <BoxComponent v-if="!tasks.length">
         No tasks finished yet.
       </BoxComponent>
+      <TaskComponent v-for="(task, index) in tasks" :key="index" :task="task" />
     </div>
   </div>
 </template>
@@ -19,6 +19,7 @@ import BoxComponent from '@/components/BoxComponent.vue';
 import { useStore } from '@/store';
 import { NotificationType } from '@/interfaces/INotification';
 import useNotifier from '@/hooks/notifier';
+import { CREATE_TASK, GET_TASKS } from '@/store/actions-types';
 
 export default defineComponent({
   name: 'TasksView',
@@ -29,12 +30,17 @@ export default defineComponent({
   },
   methods: {
     storeTask(task: ITask): void {
-      this.store.commit('ADD_TASK', task);
-      this.notify(NotificationType.SUCCESS, 'Success!', 'Task added successfuly.');
+      this.store.dispatch(CREATE_TASK, task)
+        .then(() => {
+          this.notify(NotificationType.SUCCESS, 'Success!', 'Task added successfuly.');
+          this.store.dispatch(GET_TASKS);
+        });
     },
   },
   setup() {
     const store = useStore();
+    store.dispatch(GET_TASKS);
+
     const { notify } = useNotifier();
     return {
       store,
