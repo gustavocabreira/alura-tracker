@@ -17,8 +17,9 @@
 
 <script lang="ts">
 import { NotificationType } from '@/interfaces/INotification';
+import { notificationMixin } from '@/mixins/notify';
 import { useStore } from '@/store';
-import { ADD_PROJECT, NOTIFY, UPDATE_PROJECT } from '@/store/mutation-types';
+import { ADD_PROJECT, UPDATE_PROJECT } from '@/store/mutation-types';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -29,6 +30,7 @@ export default defineComponent({
       default: '',
     },
   },
+  mixins: [notificationMixin],
   data() {
     return {
       name: '',
@@ -43,29 +45,18 @@ export default defineComponent({
         });
 
         this.$router.push({ name: 'Projects' })
-
-        this.store.commit(NOTIFY, {
-          title: 'Success!',
-          content: 'Project has been updated successfuly.',
-          type: NotificationType.SUCCESS,
-        });
+        this.notify(NotificationType.SUCCESS, 'Success', 'Project updated successfuly');
         return;
       }
 
       this.store.commit(ADD_PROJECT, this.name)
-
-      this.store.commit(NOTIFY, {
-        title: 'Success!',
-        content: 'New project added.',
-        type: NotificationType.SUCCESS,
-      });
-
+      this.notify(NotificationType.SUCCESS, 'Success', 'Project added successfuly');
       this.name = '';
 
       this.$router.push({
         name: 'Projects',
       });
-    }
+    },
   },
   setup() {
     const store = useStore()
