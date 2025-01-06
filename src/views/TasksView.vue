@@ -2,7 +2,7 @@
   <div class="column is-three-quarter content">
     <MainForm @finishTask="storeTask" />
     <div class="lista">
-      <BoxComponent v-if="!tasks.length">
+      <BoxComponent v-if="typeof tasks == 'undefined' || !tasks.length">
         No tasks finished yet.
       </BoxComponent>
       <TaskComponent v-for="(task, index) in tasks" :key="index" :task="task" @selected="selectTask" />
@@ -90,7 +90,7 @@ export default defineComponent({
     const { notify } = useNotifier();
     return {
       store,
-      tasks: computed(() => store.state.tasks),
+      tasks: computed(() => store.state.task.tasks),
       notify,
     };
   }

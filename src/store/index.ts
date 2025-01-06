@@ -1,33 +1,29 @@
-import IProject from "@/interfaces/IProject";
 import { InjectionKey } from "vue";
 import { createStore, Store, useStore as vuexUseStore } from "vuex";
-import { NOTIFY, SETUP_PROJECTS, SETUP_TASKS } from "./mutation-types";
-import ITask from "@/interfaces/ITask";
+import { NOTIFY } from "./mutation-types";
 import { INotification } from "@/interfaces/INotification";
-import { CREATE_PROJECT, GET_PROJECTS, UPDATE_PROJECT, DELETE_PROJECT, GET_TASKS, CREATE_TASK, UPDATE_TASK } from "./actions-types";
-import http from "@/http";
+import { project, ProjectState } from "./modules/project";
+import { task, TaskState } from "./modules/task";
 
-interface State {
-  projects: IProject[],
-  tasks: ITask[],
+export interface State {
+  task: TaskState,
   notifications: INotification[],
+  project: ProjectState,
 }
 
 export const key: InjectionKey<Store<State>> = Symbol();
 
 export const store = createStore<State>({
   state: {
-    projects: [],
-    tasks: [],
+    task: {
+      tasks: [],
+    },
     notifications: [],
+    project: {
+      projects: [],
+    },
   },
   mutations: {
-    [SETUP_PROJECTS](state, projects: IProject[]) {
-      state.projects = projects;
-    },
-    [SETUP_TASKS](state, tasks: ITask[]) {
-      state.tasks = tasks;
-    },
     [NOTIFY](state, notification: INotification) {
       notification.id = new Date().getTime();
       state.notifications.push(notification);
@@ -37,34 +33,10 @@ export const store = createStore<State>({
       }, 3000);
     },
   },
-  actions: {
-    [GET_PROJECTS]({ commit }) {
-      http.get('projects')
-        .then(response => commit(SETUP_PROJECTS, response.data))
-    },
-    [CREATE_PROJECT](context, name: string) {
-      return http.post('projects', {
-        name: name,
-      });
-    },
-    [UPDATE_PROJECT](context, project: IProject) {
-      return http.put(`projects/${project.id}`, {
-        name: project.name,
-      });
-    },
-    [DELETE_PROJECT](context, project: IProject) {
-      return http.delete(`projects/${project.id}`);
-    },
-    [GET_TASKS]({ commit }) {
-      http.get('tasks')
-        .then(response => commit(SETUP_TASKS, response.data))
-    },
-    [CREATE_TASK](context, task: ITask) {
-      return http.post('tasks', task);
-    },
-    [UPDATE_TASK](context, task: ITask) {
-      return http.put(`tasks/${task.id}`, task);
-    }
+  actions: {},
+  modules: {
+    project,
+    task,
   }
 });
 

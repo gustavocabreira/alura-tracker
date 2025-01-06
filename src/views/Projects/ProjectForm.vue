@@ -51,7 +51,7 @@ export default defineComponent({
     },
     handleSuccess(message: string) {
       this.$router.push({ name: 'Projects' })
-      this.notify(NotificationType.SUCCESS, 'Success', 'Project updated successfuly');
+      this.notify(NotificationType.SUCCESS, 'Success', message);
       return;
     }
   },
@@ -66,7 +66,7 @@ export default defineComponent({
   },
   mounted() {
     if (this.id) {
-      const project = this.store.state.projects.find(project => project.id == this.id)
+      const project = this.store.state.project.projects.find(project => project.id == this.id)
 
       this.name = project?.name || '';
     }

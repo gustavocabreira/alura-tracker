@@ -1,40 +1,18 @@
 {
   "projects": [
     {
-      "id": 1,
+      "id": "3275",
       "name": "Alura Tracker"
-    },
-    {
-      "id": "373d",
-      "name": "Teste 555"
     }
   ],
   "tasks": [
     {
-      "id": "1",
-      "timeInSeconds": 30,
-      "task": "Refactoring",
-      "project": {
-        "id": 1,
-        "name": "Alura Tracker"
-      }
-    },
-    {
-      "id": "716d",
-      "task": "Teste create updated",
+      "id": "37bc",
+      "task": "Teste",
       "timeInSeconds": 3,
       "project": {
-        "id": 1,
+        "id": "3275",
         "name": "Alura Tracker"
-      }
-    },
-    {
-      "id": "4bcd",
-      "task": "Teste 55",
-      "timeInSeconds": 3,
-      "project": {
-        "id": "373d",
-        "name": "Teste 555"
       }
     }
   ]
