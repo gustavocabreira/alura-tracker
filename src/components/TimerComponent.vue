@@ -25,6 +25,7 @@ import TimerDisplay from './TimerDisplay.vue';
 
 export default defineComponent({
   name: 'TimerComponent',
+  emits: ['stopped'],
   components: {
     TimerDisplay,
   },
@@ -44,8 +45,9 @@ export default defineComponent({
     },
     stop() {
       this.toggleTimer();
+      this.$emit('stopped', this.timeInSeconds)
+      clearInterval(this.timer);
       this.timeInSeconds = 0;
-      clearInterval(this.timer)
     },
     toggleTimer() {
       this.isTimerRunning = !this.isTimerRunning;
