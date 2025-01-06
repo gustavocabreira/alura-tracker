@@ -1,24 +1,24 @@
 <template>
   <main class="columns is-gapless is-multilines">
     <div class="column is-one-quarter">
-      <BarraLateral />
+      <SideBar />
     </div>
     <div class="column is-three-quarter">
-      <FormularioPrincipal />
+      <MainForm />
     </div>
   </main>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import BarraLateral from './components/BarraLateral.vue';
-import FormularioPrincipal from './components/FormularioPrincipal.vue';
+import SideBar from './components/SideBar.vue';
+import MainForm from './components/MainForm.vue';
 
 export default defineComponent({
   name: 'App',
   components: {
-    BarraLateral,
-    FormularioPrincipal
+    SideBar,
+    MainForm
   }
 });
 </script>
