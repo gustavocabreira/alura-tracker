@@ -17,6 +17,8 @@ import TaskComponent from '@/components/TaskComponent.vue';
 import ITask from '@/interfaces/ITask';
 import BoxComponent from '@/components/BoxComponent.vue';
 import { useStore } from '@/store';
+import { NOTIFY } from '@/store/mutation-types';
+import { NotificationType } from '@/interfaces/INotification';
 
 export default defineComponent({
   name: 'TasksView',
@@ -28,6 +30,11 @@ export default defineComponent({
   methods: {
     storeTask(task: ITask): void {
       this.store.commit('ADD_TASK', task);
+      this.store.commit(NOTIFY, {
+        title: 'Success!',
+        content: 'Task added successfuly.',
+        type: NotificationType.SUCCESS,
+      });
     },
   },
   setup() {

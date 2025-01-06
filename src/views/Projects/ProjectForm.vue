@@ -16,8 +16,9 @@
 </template>
 
 <script lang="ts">
+import { NotificationType } from '@/interfaces/INotification';
 import { useStore } from '@/store';
-import { ADD_PROJECT, UPDATE_PROJECT } from '@/store/mutation-types';
+import { ADD_PROJECT, NOTIFY, UPDATE_PROJECT } from '@/store/mutation-types';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -42,10 +43,23 @@ export default defineComponent({
         });
 
         this.$router.push({ name: 'Projects' })
+
+        this.store.commit(NOTIFY, {
+          title: 'Success!',
+          content: 'Project has been updated successfuly.',
+          type: NotificationType.SUCCESS,
+        });
         return;
       }
 
       this.store.commit(ADD_PROJECT, this.name)
+
+      this.store.commit(NOTIFY, {
+        title: 'Success!',
+        content: 'New project added.',
+        type: NotificationType.SUCCESS,
+      });
+
       this.name = '';
 
       this.$router.push({
