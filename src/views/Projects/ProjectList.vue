@@ -36,13 +36,14 @@
 <script lang="ts">
 import IProject from '@/interfaces/IProject';
 import { useStore } from '@/store';
+import { DELETE_PROJECT } from '@/store/mutation-types';
 import { computed, defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'ProjectList',
   methods: {
     deleteProject(project: IProject): void {
-      this.store.commit('DELETE_PROJECT', project);
+      this.store.commit(DELETE_PROJECT, project);
     }
   },
   setup() {

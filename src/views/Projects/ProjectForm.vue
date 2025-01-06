@@ -17,6 +17,7 @@
 
 <script lang="ts">
 import { useStore } from '@/store';
+import { ADD_PROJECT, UPDATE_PROJECT } from '@/store/mutation-types';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -35,7 +36,7 @@ export default defineComponent({
   methods: {
     storeProject() {
       if (this.id) {
-        this.store.commit('UPDATE_PROJECT', {
+        this.store.commit(UPDATE_PROJECT, {
           id: this.id,
           name: this.name,
         });
@@ -44,7 +45,7 @@ export default defineComponent({
         return;
       }
 
-      this.store.commit('ADD_PROJECT', this.name)
+      this.store.commit(ADD_PROJECT, this.name)
       this.name = '';
 
       this.$router.push({
