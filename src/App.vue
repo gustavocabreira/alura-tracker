@@ -20,7 +20,7 @@ export default defineComponent({
   },
   data() {
     return {
-      darkMode: false,
+      darkMode: true,
     }
   },
   methods: {

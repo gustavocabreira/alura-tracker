@@ -33,7 +33,7 @@ export default defineComponent({
   emits: ['changedTheme'],
   data() {
     return {
-      darkMode: false,
+      darkMode: true,
     };
   },
   computed: {
