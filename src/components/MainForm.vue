@@ -6,9 +6,9 @@
 			</div>
 			<div class="column">
 				<div class="is-flex is-align-items-center is-justify-content-space-between">
-					<section>
-						<strong>{{ elapsedTime }}</strong>
-					</section>
+
+					<TimerDisplay :timeInSeconds="timeInSeconds" />
+					
 					<div class="is-flex is-align-items-center">
 						<button class="button" @click="start">
 							<span class="icon">
@@ -32,18 +32,17 @@
 <script lang="ts">
 
 import { defineComponent } from 'vue';
+import TimerDisplay from './TimerDisplay.vue';
 
 export default defineComponent({
 	name: 'MainForm',
+	components: {
+		TimerDisplay,
+	},
 	data() {
 		return {
 			timeInSeconds: 0,
 			timer: 0,
-		}
-	},
-	computed: {
-		elapsedTime(): string {
-			return new Date(this.timeInSeconds * 1000).toISOString().substr(11, 8)
 		}
 	},
 	methods: {
