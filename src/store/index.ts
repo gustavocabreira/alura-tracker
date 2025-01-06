@@ -1,9 +1,11 @@
 import IProject from "@/interfaces/IProject";
-import { InjectionKey, useTemplateRef } from "vue";
+import { InjectionKey } from "vue";
 import { createStore, Store, useStore as vuexUseStore } from "vuex";
-import { ADD_PROJECT, ADD_TASK, DELETE_PROJECT, NOTIFY, UPDATE_PROJECT } from "./mutation-types";
+import { ADD_PROJECT, ADD_TASK, DELETE_PROJECT, NOTIFY, SETUP_PROJECTS, UPDATE_PROJECT } from "./mutation-types";
 import ITask from "@/interfaces/ITask";
-import { INotification, NotificationType } from "@/interfaces/INotification";
+import { INotification } from "@/interfaces/INotification";
+import { GET_PROJECTS } from "./actions-types";
+import http from "@/http";
 
 interface State {
   projects: IProject[],
@@ -35,6 +37,9 @@ export const store = createStore<State>({
       const index = state.projects.findIndex(el => el.id == project.id);
       state.projects.splice(index, 1);
     },
+    [SETUP_PROJECTS](state, projects: IProject[]) {
+      state.projects = projects;
+    },
     [ADD_TASK](state, task: ITask) {
       state.tasks.push(task);
     },
@@ -45,6 +50,12 @@ export const store = createStore<State>({
       setTimeout(() => {
         state.notifications = state.notifications.filter(notif => notif.id !== notification.id);
       }, 3000);
+    },
+  },
+  actions: {
+    [GET_PROJECTS]({ commit }) {
+      http.get('projects')
+        .then(response => commit(SETUP_PROJECTS, response.data))
     }
   }
 });

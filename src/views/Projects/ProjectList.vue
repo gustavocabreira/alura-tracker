@@ -36,6 +36,7 @@
 <script lang="ts">
 import IProject from '@/interfaces/IProject';
 import { useStore } from '@/store';
+import { GET_PROJECTS } from '@/store/actions-types';
 import { DELETE_PROJECT } from '@/store/mutation-types';
 import { computed, defineComponent } from 'vue';
 
@@ -48,6 +49,8 @@ export default defineComponent({
   },
   setup() {
     const store = useStore()
+    store.dispatch(GET_PROJECTS);
+    
     return {
       projects: computed(() => store.state.projects),
       store,
