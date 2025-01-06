@@ -35,7 +35,6 @@ export default defineComponent({
     return {
       store,
       tasks: computed(() => store.state.tasks),
-      projects: computed(() => store.state.projects),
     };
   }
 });
