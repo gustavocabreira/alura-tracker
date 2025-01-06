@@ -36,21 +36,21 @@
 <script lang="ts">
 import IProject from '@/interfaces/IProject';
 import { useStore } from '@/store';
-import { GET_PROJECTS } from '@/store/actions-types';
-import { DELETE_PROJECT } from '@/store/mutation-types';
+import { DELETE_PROJECT, GET_PROJECTS } from '@/store/actions-types';
 import { computed, defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'ProjectList',
   methods: {
     deleteProject(project: IProject): void {
-      this.store.commit(DELETE_PROJECT, project);
+      this.store.dispatch(DELETE_PROJECT, project)
+        .then(() => this.store.dispatch(GET_PROJECTS));
     }
   },
   setup() {
     const store = useStore()
     store.dispatch(GET_PROJECTS);
-    
+
     return {
       projects: computed(() => store.state.projects),
       store,
