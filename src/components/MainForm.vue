@@ -21,7 +21,7 @@
 
 <script lang="ts">
 
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import TimerComponent from './TimerComponent.vue';
 import { useStore } from 'vuex';
 import { key } from '@/store';
@@ -35,38 +35,35 @@ export default defineComponent({
 		TimerComponent,
 	},
 	emits: ['finishTask'],
-	data() {
-		return {
-			task: '',
-			tasks: [],
-			projectId: null,
-		};
-	},
-	methods: {
-		finishTask(elapsedTimeInSeconds: number): void {
-			if (!this.projectId) {
-				this.notify(NotificationType.DANGER, 'Oops!', 'You must select a project before finishing the task.');
+	setup(props, { emit }) {
+		const store = useStore(key);
+		const { notify } = useNotifier()
+		store.dispatch(GET_PROJECTS);
+
+		const task = ref("");
+		const projectId = ref("");
+		const projects = computed(() => store.state.project.projects);
+
+		const finishTask = (elapsedTimeInSeconds: number): void => {
+			if (!projectId.value) {
+				notify(NotificationType.DANGER, 'Oops!', 'You must select a project before finishing the task.');
 				return;
 			}
 
-			this.$emit('finishTask', {
-				task: this.task,
+			emit('finishTask', {
+				task: task.value,
 				timeInSeconds: elapsedTimeInSeconds,
-				project: this.projects.find(project => project.id == this.projectId),
+				project: projects.value.find(project => project.id == projectId.value),
 			});
 
-			this.task = '';
-		},
-	},
-	setup() {
-		const store = useStore(key);
-		store.dispatch(GET_PROJECTS);
-		
-		const { notify } = useNotifier()
+			task.value = '';
+		};
+
 		return {
-			store,
-			notify,
-			projects: computed(() => store.state.project.projects),
+			task,
+			projectId,
+			projects,
+			finishTask,
 		};
 	},
 });

@@ -21,6 +21,7 @@ import { useStore } from '@/store';
 import { defineComponent, ref } from 'vue';
 import useNotifier from '@/hooks/notifier';
 import { CREATE_PROJECT, UPDATE_PROJECT } from '@/store/actions-types';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'ProjectForm',
@@ -30,27 +31,9 @@ export default defineComponent({
       default: '',
     },
   },
-  methods: {
-    storeProject() {
-      if (this.id) {
-        this.store.dispatch(UPDATE_PROJECT, {
-          id: this.id,
-          name: this.name,
-        })
-          .then(() => this.handleSuccess('Project updated successfuly'));
-        return;
-      }
-
-      this.store.dispatch(CREATE_PROJECT, this.name)
-        .then(() => this.handleSuccess('Project added successfuly'))
-    },
-    handleSuccess(message: string) {
-      this.$router.push({ name: 'Projects' })
-      this.notify(NotificationType.SUCCESS, 'Success', message);
-      return;
-    }
-  },
   setup(props) {
+    const router = useRouter();
+
     const store = useStore()
     const { notify } = useNotifier()
 
@@ -59,12 +42,31 @@ export default defineComponent({
     if (props.id) {
       const project = store.state.project.projects.find(project => project.id == props.id)
       name.value = project?.name || '';
-    }    
+    }
+
+    const handleSuccess = (message: string) => {
+      router.push({ name: 'Projects' })
+      notify(NotificationType.SUCCESS, 'Success', message);
+      return;
+    };
+
+    const storeProject = () => {
+      if (props.id) {
+        store.dispatch(UPDATE_PROJECT, {
+          id: props.id,
+          name: name.value,
+        })
+          .then(() => handleSuccess('Project updated successfuly'));
+        return;
+      }
+
+      store.dispatch(CREATE_PROJECT, name.value)
+        .then(() => handleSuccess('Project added successfuly'))
+    };
 
     return {
-      store,
-      notify,
       name,
+      storeProject,
     };
   },
 });
