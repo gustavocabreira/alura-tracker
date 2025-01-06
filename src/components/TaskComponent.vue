@@ -7,6 +7,9 @@
       <div class="column">
         <TimerDisplay :time-in-seconds="task.timeInSeconds" />
       </div>
+      <div class="column">
+        {{ task?.project?.name }}
+      </div>
     </div>
   </BoxComponent>
 </template>

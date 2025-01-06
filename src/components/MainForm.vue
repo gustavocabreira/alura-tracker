@@ -8,7 +8,7 @@
 				<div class="select">
 					<select v-model="projectId">
 						<option value="">Choose a project</option>
-						<option :value="projectId" v-for="project in projects" :key="project.id">{{ project.name }}</option>
+						<option :value="project.id" v-for="project in projects" :key="project.id">{{ project.name }}</option>
 					</select>
 				</div>
 			</div>
