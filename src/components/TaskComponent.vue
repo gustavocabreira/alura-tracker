@@ -1,6 +1,6 @@
 <template>
   <BoxComponent>
-    <div class="columns">
+    <div class="columns clickable" @click="selectTask">
       <div class="column is-7">
         {{ task.task || 'Task with no description' }}
       </div>
@@ -32,8 +32,17 @@ export default defineComponent({
     TimerDisplay,
     BoxComponent,
   },
+  methods: {
+    selectTask(): void {
+      this.$emit('selected', this.task)
+    }
+  }
 })
 
 </script>
 
-<style scoped></style>
+<style scoped>
+.clickable {
+  cursor: pointer;
+}
+</style>

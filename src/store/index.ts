@@ -4,7 +4,7 @@ import { createStore, Store, useStore as vuexUseStore } from "vuex";
 import { NOTIFY, SETUP_PROJECTS, SETUP_TASKS } from "./mutation-types";
 import ITask from "@/interfaces/ITask";
 import { INotification } from "@/interfaces/INotification";
-import { CREATE_PROJECT, GET_PROJECTS, UPDATE_PROJECT, DELETE_PROJECT, GET_TASKS, CREATE_TASK } from "./actions-types";
+import { CREATE_PROJECT, GET_PROJECTS, UPDATE_PROJECT, DELETE_PROJECT, GET_TASKS, CREATE_TASK, UPDATE_TASK } from "./actions-types";
 import http from "@/http";
 
 interface State {
@@ -61,6 +61,9 @@ export const store = createStore<State>({
     },
     [CREATE_TASK](context, task: ITask) {
       return http.post('tasks', task);
+    },
+    [UPDATE_TASK](context, task: ITask) {
+      return http.put(`tasks/${task.id}`, task);
     }
   }
 });
