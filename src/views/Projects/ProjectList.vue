@@ -21,6 +21,12 @@
               <i class="fas fa-pencil-alt"></i>
             </span>
           </router-link>
+
+          <button class="button is-danger ml-2" @click="deleteProject(project)">
+            <span class="icon is-small">
+              <i class="fas fa-trash"></i>
+            </span>
+          </button>
         </td>
       </tr>
     </tbody>
@@ -28,16 +34,22 @@
 </template>
 
 <script lang="ts">
+import IProject from '@/interfaces/IProject';
 import { useStore } from '@/store';
 import { computed, defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'ProjectList',
-
+  methods: {
+    deleteProject(project: IProject): void {
+      this.store.commit('DELETE_PROJECT', project);
+    }
+  },
   setup() {
     const store = useStore()
     return {
       projects: computed(() => store.state.projects),
+      store,
     };
   },
 });

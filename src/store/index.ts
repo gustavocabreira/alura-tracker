@@ -23,7 +23,11 @@ export const store = createStore<State>({
     'UPDATE_PROJECT'(state, project: IProject) {
       const index = state.projects.findIndex(el => el.id == project.id);
       state.projects[index] = project;
-    }
+    },
+    'DELETE_PROJECT'(state, project: IProject) {
+      const index = state.projects.findIndex(el => el.id == project.id);
+      state.projects.splice(index, 1);
+    },
   }
 });
 
